@@ -1,0 +1,226 @@
+programas Esenciais
+
+apt install curl && apt install unzip && curl https://rclone.org/install.sh | sudo bash && apt-get install nano && apt-get install fuse
+apt update && apt install vim && apt install samba && apt-get install apache2
+
+
+
+Apachee2 Configurações
+
+nano /etc/apache2/ apache2.conf
+
+/etc/init.d/apache2 status
+/etc/init.d/apache2 start
+/etc/init.d/apache2 restart
+
+nano /root/.config/rclone/rclone.conf
+
+[Emby]
+type = drive
+scope = drive
+token = {"access_token":"ya29.A0ARrdaM8o2nsq0EwukrvHOmFI0sVeNw7P_w26_zYqQ5sLhqPn4Ij-sSJPiduGLwp5iTbbyErKyCZ-wOD0vTBlKvHV7-LW9I3Y0H4AT6TbBgd7Sz62vV28UJZJQMa_yO4wGBGJKMXAi0VPG9cB5ahJV67PopSJ","token_type":"Bearer","refresh_token":"1//0h6aOhp_5y00iCgYIARAAGBESNwF-L9IrFkvN2T4GKDdEbQRmkPgSgGMRyB5h3bGnpSsRJhffXNM1xuA90m6UETPZ70DC8hdIIgk","expiry":"2022-01-28T10:29:04.734514565-03:00"}
+team_drive = 0AKE4DFj1pRgdUk9PVA
+root_folder_id =
+
+
+Ponto de Montagem
+
+rclone mount "Emby:SMB/" /home/Emby/ --default-permissions --dir-perms 0777 --file-perms 0666 --umask=0 --allow-other --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --vfs-read-ahead 256 --transfers 20 --use-mmap --fast-list
+
+Servidor Http
+
+rclone serve webdav "Emby:SMB/" --addr 127.0.0.1:80 --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --read-only --transfers 20 --use-mmap --fast-list
+
+Servidor Sftp 
+
+rclone serve dlna "Emby:SMB/" --addr 192.168.0.4:8080 --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --read-only --transfers 20 --use-mmap --fast-list
+
+
+
+Comandos Samba
+
+
+useradd -m Leandro && useradd -m Convidados && useradd -m SupeUsuario
+
+smbpasswd -a Leandro && smbpasswd -a Convidados && smbpasswd -a SupeUsuario
+pdbedit -w -L
+
+pdbedit -x -u + nome do usuario
+
+cd /etc/samba
+
+cp smb.conf smb.conf.bkp
+
+vim smb.conf
+
+[Emby]
+path = /home/Emby
+browseable = yes
+read only = no
+directory mask = 0700
+create mask = 0600
+
+
+[games]
+path = /home/games
+browseable = yes
+read only = no
+directory mask = 0700
+create mask = 060
+
+[Downloas]
+path = /home/Downloads
+browseable = yes
+read only = no
+directory mask = 0700
+create mask = 060
+
+systemctl restart smbd
+/etc/init.d/samba restart
+/etc/init.d/smbd start
+/etc/init.d/nmdb start
+
+sudo chown -fvR root /home/Server
+
+Ngrok tutorial
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.tgz && tar -zxvf ngrok-stable-linux-arm.tgz && chmod +x ngrok && ./ngrok authtoken 1uGFs2vQTUh6UZBFUfAt3N0bxpl_4gBgzEqu5rMVoFqqcFSxj
+
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.tgz
+
+Descompactar Arquivos de instalção
+
+tar -zxvf nome_do_pacote.tar.gz
+
+comando para tornar execultavel 
+
+chmod +x ngrok
+
+Comando para cnfigurar o arquivo conf
+
+nano /root/.ngrok2/ngrok.yml
+file: /root/.ngrok2/ngrok.yml
+
+!!!!!!!!!!!!!!!!configuração!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+authtoken: 1uGFs2vQTUh6UZBFUfAt3N0bxpl_4gBgzEqu5rMVoFqqcFSxj
+region: us
+console_ui: true
+web_addr: localhost:4040
+
+tunnels:
+  demo:
+    proto: http
+    addr: 8080
+    #hostname: http://1a80-168-196-192-130.ngrok.io
+    inspect: false
+    #auth: "demo:secret"
+
+Execultando ngrok  
+
+./ngrok start demo
+
+Configurando Manual
+
+./ngrok http 80
+
+./ngrok tcp 22
+
+
+
+/home/Emby/
+
+http://1a80-168-196-192-130.ngrok.io/filmes/Filmes-01/2020/a%20casa%202020/A.Casa.2020.1080p.NF.WEB-DL.DD5.1.x264-PiA.mp4
+
+
+https://raw.githubusercontent.com/wandergrafi111207/MINHA-LISTA/master/Server%20Externo.m3u
+
+
+Instalando ngrok no Termux
+apt update && apt upgrade
+apt install git
+git clone https://github.com/tchelospy/termux-ngrok.git
+cd termux-ngrok
+chmod +x termux-ngrok.sh
+./termux-ngrok.sh
+
+
+
+
+Como : Siga as instruções abaixo...
+
+Primeiro, clone este repositório digitando...
+
+$ git clone https://github.com/adi1090x/termux-style.git
+E então, digite...
+
+$ cd termux-style
+$ chmod +x configuração
+$ ./configuração
+E... Pronto, termux-style instalado com sucesso no seu termux. Aqui estão algumas prévias...
+
+
+
+apt update && apt upgrade
+apt install git
+git clone https://github.com/tchelospy/termux-ngrok.git
+cd termux-ngrok
+chmod +x termux-ngrok.sh
+./termux-ngrok.sh
+
+
+
+rclone serve webdav Base: --addr 127.0.0.1:8080 --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --read-only --transfers 20 --use-mmap --fast-list
+
+http://182e-168-196-192-130.ngrok.io
+
+
+
+
+pkg upgrade && pkg install git
+
+git clone --depth=1 https://github.com/adi1090x/termux-desktop.git
+
+cd termux-desktop
+chmod +x setup.sh
+./setup.sh --install
+
+
+É isso. Termux Desktopestá instalado com sucesso. Reinicie o Termux e digite startdesktopo comando para iniciar o vncserver e se conectar via VNC Client.
+Se você quiser desinstalar o Termux Desktop, basta executar setup.shcom a opção --uninstall . Basta manter o setup.shscript e excluir o repositório clonado para economizar espaço. Vou criar um script de desinstalação separado mais tarde. O comando abaixo removerá todos os pacotes e excluirá todos os arquivos de configuração instalados, incluindo as alterações que você fez. Então cuidado aí...
+
+tcp://4.tcp.ngrok.io:10082
+https://raw.githubusercontent.com/MasterDevX/KaliTermux/master/InstallKali.sh && bash InstallKali.sh
+
+
+[Download]
+type = drive
+scope = drive
+token = {"access_token":"ya29.A0ARrdaM-LjuC5S25upNA1Klvrc6CL73aGX91FWCWOgC0wN0ntffGZA4T82G_wP33EI4IMuZUSKyYxuyJWaTlEj5QeWBfWk8Ql4mQlvN0UbMeFAIdv9bQ0IHqGQ5y5XB6yKz7mNF4mmZY--voo2k-PLY3aMNeL","token_type":"Bearer","refresh_token":"1//0hNI42mstCWLbCgYIARAAGBESNwF-L9IrnWoHN1JLKf3e0ZhdmqxKi-Skc5POZV_4ko2r8yk60wX1Ft0evHPX9FcM_IJsmPWpPqQ","expiry":"2022-02-01T11:24:24.497912846Z"}
+team_drive = 0AACBXiUEIhbmUk9PVA
+root_folder_id = 
+
+"games:EmbyFull/Base"
+
+[games]
+type = drive
+scope = drive
+token = {"access_token":"ya29.A0ARrdaM-w1B9zMP6Ob_b_0lVxUsOqi2p8Ulm9_OkhdQJKNhNa1nx8SC3Eid1KQ3qaRJUnEAoa45nQyGlbH1MVCnjcst2R2w30OuHXLlUw1B99k4cLVhB2xSUzcXyNp3dKe2nq8R54kbrFERthWWz2Ccgqe_PD","token_type":"Bearer","refresh_token":"1//0hXfP8To4uo5-CgYIARAAGBESNwF-L9IrFOCNfq01GNNqhjV5xVrtVOeGOvTLZCyWRO0Z-C0HNor8rvNrczVU5NC5bDzH1dNg7oE","expiry":"2022-02-01T11:29:57.618895462Z"}
+team_drive = 0AE-wZeJmmAIFUk9PVA
+root_folder_id = 
+
+
+
+rclone mount "Emby:SMB/" /home/Emby/ --default-permissions --dir-perms 0777 --file-perms 0666 --umask=0 --allow-other --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --vfs-read-ahead 256 --transfers 20 --use-mmap --fast-list
+rclone mount "Download:EmbyFull/Base" /home/Downloads/ --default-permissions --dir-perms 0777 --file-perms 0666 --umask=0 --allow-other --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --vfs-read-ahead 256 --transfers 20 --use-mmap --fast-list
+rclone mount "games:games/" /home/games/ --default-permissions --dir-perms 0777 --file-perms 0666 --umask=0 --allow-other --dir-cache-time 3h0m0s --buffer-size 128 --vfs-cache-mode minimal --vfs-read-ahead 256 --transfers 20 --use-mmap --fast-list
+
+
+
+
+
+
+
+
+
+
+
